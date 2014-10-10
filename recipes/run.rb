@@ -30,7 +30,8 @@ docker_container 'mongodb-replset-configurator' do
   cmd_timeout 300
   env [
     "MRSC_ID=#{node['mongodb-replset-configurator']['id']}",
-    "MRSC_SERVERS=#{node['mongodb-replset-configurator']['servers'].join(',')}"
+    "MRSC_SERVERS=#{node['mongodb-replset-configurator']['servers'].join(',')}",
+    "MRSC_ARBITERS=#{node['mongodb-replset-configurator']['arbiters'].join(',')}"
   ]
   action :run
 end
