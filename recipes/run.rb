@@ -26,6 +26,7 @@
 
 docker_container 'mongodb-replset-configurator' do
   image 'kjunine/mongodb-replset-configurator:latest'
+  container_name 'mongodb-replset-configurator'
   remove_automatically true
   cmd_timeout 300
   env [
