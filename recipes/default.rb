@@ -26,5 +26,6 @@
 
 docker_image 'kjunine/mongodb-replset-configurator' do
   tag 'latest'
+  cmd_timeout 600
   action :pull
 end

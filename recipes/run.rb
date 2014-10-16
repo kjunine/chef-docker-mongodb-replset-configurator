@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: docker-mongodb-replset-configurator
-# Recipe:: default
+# Recipe:: run
 #
 # Copyright (C) 2014 Daniel Ku
 #
@@ -24,15 +24,12 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-docker_container 'mongodb-replset-configurator' do
-  image 'kjunine/mongodb-replset-configurator:latest'
-  container_name 'mongodb-replset-configurator'
-  remove_automatically true
-  cmd_timeout 300
-  env [
-    "MRSC_ID=#{node['mongodb-replset-configurator']['id']}",
-    "MRSC_SERVERS=#{node['mongodb-replset-configurator']['servers'].join(',')}",
-    "MRSC_ARBITERS=#{node['mongodb-replset-configurator']['arbiters'].join(',')}"
-  ]
-  action :run
+execute "mongodb-replset-configurator" do
+  command <<-EOH
+    docker run -it --rm --name="mongodb-replset-configurator" \
+    -e MRSC_ID=#{node['mongodb-replset-configurator']['id']} \
+    -e MRSC_SERVERS=#{node['mongodb-replset-configurator']['servers'].join(',')} \
+    -e MRSC_ARBITERS=#{node['mongodb-replset-configurator']['arbiters'].join(',')} \
+    kjunine/mongodb-replset-configurator:latest
+  EOH
 end

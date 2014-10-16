@@ -74,15 +74,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.json = {
-      mysql: {
-        server_root_password: 'rootpass',
-        server_debian_password: 'debpass',
-        server_repl_password: 'replpass'
+      "docker" => {
+        "host" => [
+          "unix:///var/run/docker.sock",
+          "tcp://0.0.0.0:2375"
+        ]
       }
     }
-
     chef.run_list = [
-        "recipe[docker-mongodb-replset-configurator::default]"
+      "recipe[docker]",
+      "recipe[docker-mongodb-replset-configurator::default]",
+      "recipe[docker-mongodb-replset-configurator::run]"
     ]
   end
 end
